@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sakhi App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.pink,
       ),
       home: const MyHomePage(title: 'Find Sanitary Stores'),
     );
@@ -32,6 +32,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with OSMMixinObserver {
   late MapController controller;
+  bool showMap = false;
 
   @override
   void initState() {
@@ -45,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> with OSMMixinObserver {
         west: 5.9559113,
       ),
     );
-    controller.addObserver(this);
+    // controller.addObserver(this);
     super.initState();
   }
 
@@ -82,79 +83,118 @@ class _MyHomePageState extends State<MyHomePage> with OSMMixinObserver {
           title: Text(widget.title),
         ),
         body: Stack(children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: OSMFlutter(
-              controller: controller,
-              trackMyPosition: true,
-              initZoom: 14,
-              minZoomLevel: 8,
-              maxZoomLevel: 19,
-              stepZoom: 1.0,
-              userLocationMarker: UserLocationMaker(
-                personMarker: const MarkerIcon(
-                  icon: Icon(
-                    Icons.location_history_rounded,
-                    color: Colors.red,
-                    size: 48,
+          showMap
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: OSMFlutter(
+                    controller: controller,
+                    trackMyPosition: true,
+                    initZoom: 14,
+                    minZoomLevel: 8,
+                    maxZoomLevel: 19,
+                    stepZoom: 1.0,
+                    userLocationMarker: UserLocationMaker(
+                      personMarker: const MarkerIcon(
+                        icon: Icon(
+                          Icons.location_history_rounded,
+                          color: Colors.red,
+                          size: 48,
+                        ),
+                      ),
+                      directionArrowMarker: MarkerIcon(
+                        icon: Icon(
+                          Icons.circle,
+                          color: Colors.pink.shade500,
+                          size: 72,
+                        ),
+                      ),
+                    ),
+                    roadConfiguration: RoadConfiguration(
+                      startIcon: const MarkerIcon(
+                        icon: Icon(
+                          Icons.person,
+                          size: 64,
+                          color: Colors.brown,
+                        ),
+                      ),
+                      roadColor: Colors.yellowAccent,
+                    ),
+                    markerOption: MarkerOption(
+                        defaultMarker: const MarkerIcon(
+                      icon: Icon(
+                        Icons.person_pin_circle,
+                        color: Colors.blue,
+                        size: 56,
+                      ),
+                    )),
+                  ))
+              : SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: const Image(image: AssetImage("map.png"))),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: SizedBox(
+              height: 200,
+              width: 60,
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    minRadius: 38,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.zoom_in_outlined,
+                        size: 32,
+                      ),
+                      onPressed: () {},
+                    ),
                   ),
-                ),
-                directionArrowMarker: MarkerIcon(
-                  icon: Icon(
-                    Icons.circle,
-                    color: Colors.pink.shade500,
-                    size: 72,
+                  CircleAvatar(
+                    minRadius: 38,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.zoom_out_outlined,
+                        size: 32,
+                      ),
+                      onPressed: () {},
+                    ),
                   ),
-                ),
+                ],
               ),
-              roadConfiguration: RoadConfiguration(
-                startIcon: const MarkerIcon(
-                  icon: Icon(
-                    Icons.person,
-                    size: 64,
-                    color: Colors.brown,
-                  ),
-                ),
-                roadColor: Colors.yellowAccent,
-              ),
-              markerOption: MarkerOption(
-                  defaultMarker: const MarkerIcon(
-                icon: Icon(
-                  Icons.person_pin_circle,
-                  color: Colors.blue,
-                  size: 56,
-                ),
-              )),
             ),
           ),
-          Container(
-            height: 200,
-            width: 60,
-            child: Column(
-              children: [
-                CircleAvatar(
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.zoom_in_outlined,
-                      size: 38,
+          Positioned(
+            bottom: 10,
+            right: 10,
+            child: SizedBox(
+              height: 170,
+              width: 60,
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    minRadius: 38,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.add_location,
+                        size: 32,
+                      ),
+                      onPressed: () {},
                     ),
-                    onPressed: () {},
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                CircleAvatar(
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.zoom_out_outlined,
-                      size: 38,
+                  CircleAvatar(
+                    minRadius: 38,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.circle_outlined,
+                        size: 32,
+                      ),
+                      onPressed: () {},
                     ),
-                    onPressed: () {},
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           )
         ]));
