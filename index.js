@@ -67,30 +67,47 @@ app.post("/regshop",(req,res)=>
 
 })
 
-app.get("/getLatLong",function(req,res) //getting  list of stores
+app.get("/getLatLongShops",function(req,res) //getting  list of stores
 {
-    var latLong = {
-        latlongs:[{
+    var latLong = [{
             "lat" : "18.516726",
             "long" : "73.856255"
         },
         {
-            "lat" : "18.526726",
-            "long" : "73.866255"
+            "lat" : "18.52867666",
+            "long" : "73.84348869"
         },
         {
-            "lat" : "18.527726",
-            "long" : "73.868255"
+            "lat" : "18.52248743",
+            "long" : "73.84932518"
         },
         {
-            "lat" : "18.526926",
-            "long" : "73.866755"
+            "lat" : "18.51124852",
+            "long" : "73.87018204"
+        },
+        {
+            "lat" : "18.54300875",
+            "long" : "73.87181282"
         }
 
-    ]}
+    ]
 
     res.send (latLong);
 
-   
+})
+
+app.get("/getLatLongToilets",function(req,res) //getting  list of stores
+{
+    var latLong = [{
+            "lat" : "18.51760418",
+            "long" : "73.83876801"
+        },
+        {
+            "lat" : "18.50457312",
+            "long" : "73.84048462"
+        }
+    ]
+
+    res.send (latLong);
 
 })

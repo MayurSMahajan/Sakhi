@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:sakhi_flutter/services.dart';
+
+import 'LatLang.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,7 +35,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with OSMMixinObserver {
   late MapController controller;
-  bool showMap = false;
+  bool showMap = true;
+
+  List<LatLong> shops = [];
+  List<LatLong> toilets = [];
 
   @override
   void initState() {
@@ -46,21 +52,52 @@ class _MyHomePageState extends State<MyHomePage> with OSMMixinObserver {
         west: 5.9559113,
       ),
     );
-    // controller.addObserver(this);
+    controller.addObserver(this);
+    ShopServices.getShops().then((value) {
+      setState(() {
+        shops = value;
+      });
+    });
+    ShopServices.getToilets().then((toil) {
+      setState(() {
+        toilets = toil;
+      });
+    });
     super.initState();
   }
 
   Future<void> mapIsInitialized() async {
-    await controller.addMarker(
-      GeoPoint(latitude: 47.442475, longitude: 8.4680389),
-      markerIcon: const MarkerIcon(
-        icon: Icon(
-          Icons.sanitizer,
-          color: Colors.red,
-          size: 72,
+    print("Inside Map is initialized");
+
+    for (var i = 0; i < shops.length; i++) {
+      await controller.addMarker(
+        GeoPoint(
+            latitude: double.parse(shops[i].lat),
+            longitude: double.parse(shops[i].long)),
+        markerIcon: const MarkerIcon(
+          icon: Icon(
+            Icons.store,
+            color: Colors.teal,
+            size: 100,
+          ),
         ),
-      ),
-    );
+      );
+    }
+
+    for (var i = 0; i < toilets.length; i++) {
+      await controller.addMarker(
+        GeoPoint(
+            latitude: double.parse(toilets[i].lat),
+            longitude: double.parse(toilets[i].long)),
+        markerIcon: const MarkerIcon(
+          icon: Icon(
+            Icons.woman,
+            color: Colors.purple,
+            size: 100,
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -148,7 +185,9 @@ class _MyHomePageState extends State<MyHomePage> with OSMMixinObserver {
                         Icons.zoom_in_outlined,
                         size: 32,
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        await controller.setZoom(stepZoom: 2);
+                      },
                     ),
                   ),
                   CircleAvatar(
@@ -158,7 +197,9 @@ class _MyHomePageState extends State<MyHomePage> with OSMMixinObserver {
                         Icons.zoom_out_outlined,
                         size: 32,
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        await controller.setZoom(stepZoom: -2);
+                      },
                     ),
                   ),
                 ],
@@ -190,7 +231,9 @@ class _MyHomePageState extends State<MyHomePage> with OSMMixinObserver {
                         Icons.circle_outlined,
                         size: 32,
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        await controller.currentLocation();
+                      },
                     ),
                   ),
                 ],
