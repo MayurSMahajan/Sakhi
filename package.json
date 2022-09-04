@@ -1,0 +1,26 @@
+{
+  "name": "sakhi",
+  "version": "1.0.0",
+  "description": "A flutter app that will show nearby locations of sanitary essentials for women near them. \r Lets make our girls feel safe.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MayurSMahajan/Sakhi.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MayurSMahajan/Sakhi/issues"
+  },
+  "homepage": "https://github.com/MayurSMahajan/Sakhi#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "express": "^4.18.1",
+    "firebase": "^9.9.4",
+    "mongoose": "^6.5.4",
+    "nodemon": "^2.0.19"
+  }
+}
